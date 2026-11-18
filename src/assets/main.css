@@ -216,24 +216,29 @@ p {
 }
 
 .legend {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.55rem 0.85rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem 0.75rem;
   margin: var(--space-3) 0;
   padding: 0;
   list-style: none;
 }
 
 .legend__item {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 0.4rem;
+  min-width: 0;
   font-size: 0.95rem;
   font-weight: 700;
   color: var(--color-text);
   line-height: 1.2;
+}
+
+.legend__item > span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .swatch {

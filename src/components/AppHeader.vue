@@ -7,7 +7,7 @@ const route = useRoute()
 
 const title = computed(() => {
   if (route.name === 'calendario') return 'Calendario'
-  if (route.name === 'registro') return 'Registrar peso'
+  if (route.name === 'registro') return 'Peso'
   if (route.name === 'ajustes') return 'Ajustes'
   return 'CheckPeso'
 })

@@ -147,7 +147,7 @@ async function onSubmit() {
     </p>
 
     <div class="field">
-      <label class="field__label" for="peso-entrada">Entrada (kg)</label>
+      <label class="field__label" for="peso-entrada">Entrada</label>
       <input
         id="peso-entrada"
         class="field__input"
@@ -166,7 +166,7 @@ async function onSubmit() {
     </div>
 
     <div class="field">
-      <label class="field__label" for="peso-salida">Salida (kg)</label>
+      <label class="field__label" for="peso-salida">Salida</label>
       <input
         id="peso-salida"
         class="field__input"
@@ -197,8 +197,8 @@ async function onSubmit() {
 .weight-form {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  margin-top: var(--space-3);
+  gap: var(--space-3);
+  margin-top: var(--space-2);
 }
 
 .form-alert {
@@ -243,7 +243,7 @@ async function onSubmit() {
   color: var(--color-text);
   font-family: inherit;
   font-size: var(--fs-2xl);
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.2;
   text-align: center;
 }

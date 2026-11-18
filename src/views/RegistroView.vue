@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import AppIcon from '@/components/AppIcon.vue'
 import WeightForm from '@/components/WeightForm.vue'
-import { formatLongDate, isOfficialDateKey, todayKey } from '@/utils/dates'
+import { isOfficialDateKey, parseDateKey, todayKey } from '@/utils/dates'
 
 const route = useRoute()
 
@@ -12,24 +12,35 @@ const fecha = computed(() => {
   return typeof q === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(q) ? q : todayKey()
 })
 
-const fechaTexto = computed(() => formatLongDate(fecha.value))
 const esOficial = computed(() => isOfficialDateKey(fecha.value))
+
+const diaSemana = computed(() =>
+  parseDateKey(fecha.value).toLocaleDateString('es', { weekday: 'long' }),
+)
+
+const fechaCorta = computed(() =>
+  parseDateKey(fecha.value).toLocaleDateString('es', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  }),
+)
 </script>
 
 <template>
   <section class="panel" aria-labelledby="reg-title">
-    <h1 id="reg-title" class="sr-only">Registrar peso</h1>
-    <p class="lead">
-      <span class="reg-date">{{ fechaTexto }}</span>
-      <span class="reg-type">
+    <header class="reg-hero">
+      <h1 id="reg-title" class="reg-hero__day">
+        {{ diaSemana }}
         <AppIcon
-          class="reg-type__icon"
-          :class="{ 'reg-type__icon--extra': !esOficial }"
+          class="reg-hero__icon"
+          :class="{ 'reg-hero__icon--extra': !esOficial }"
           :name="esOficial ? 'blood' : 'extra'"
-          :size="esOficial ? 22 : 16"
+          :size="esOficial ? 28 : 20"
         />
-      </span>
-    </p>
+      </h1>
+      <p class="reg-hero__date">{{ fechaCorta }}</p>
+    </header>
 
     <WeightForm :fecha="fecha" />
 
@@ -47,31 +58,39 @@ const esOficial = computed(() => isOfficialDateKey(fecha.value))
 </template>
 
 <style scoped>
-.lead {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  flex-wrap: wrap;
+.reg-hero {
+  margin-bottom: var(--space-2);
+  text-align: center;
 }
 
-.reg-date {
-  color: var(--color-text);
-  font-weight: 800;
-  text-transform: capitalize;
-  font-size: clamp(1.1rem, 4.2vw, var(--fs-lg));
-}
-
-.reg-type {
+.reg-hero__day {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: clamp(2.1rem, 8vw, 2.85rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  text-transform: capitalize;
   color: var(--color-text);
 }
 
-.reg-type__icon {
-  color: var(--color-official);
+.reg-hero__date {
+  margin: 0.4rem 0 0;
+  font-size: clamp(1.35rem, 5vw, 1.75rem);
+  font-weight: 800;
+  text-transform: capitalize;
+  color: var(--color-text);
 }
 
-.reg-type__icon--extra {
+.reg-hero__icon {
+  color: var(--color-official);
+  flex-shrink: 0;
+}
+
+.reg-hero__icon--extra {
   color: var(--color-extra);
 }
 </style>
