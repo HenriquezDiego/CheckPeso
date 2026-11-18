@@ -34,13 +34,13 @@ En cada turno:
 - Estilos globales y tokens de accesibilidad.
 - Sin lógica de calendario real ni persistencia aún.
 
-### Fase 2 — Calendario reactivo *(actual)*
+### Fase 2 — Calendario reactivo
 - Calendario mensual interactivo.
 - Días oficiales **Martes** y **Viernes** priorizados y marcados en grande.
 - Días extras (cualquier otro día con registro) resaltados con color distinto.
 - Navegación mes anterior / siguiente.
 
-### Fase 3 — Formulario de doble registro Entrada / Salida
+### Fase 3 — Formulario de doble registro Entrada / Salida *(actual)*
 - Pantalla grande de registro.
 - Campos: peso de **Entrada** y peso de **Salida** (días oficiales).
 - Soporte para registro simple en días extras.
@@ -127,6 +127,6 @@ type WeightEntry = {
 
 - [x] Documento de contexto (`PROYECTO.md`)
 - [x] Fase 1 — Estructura base y vistas accesibles
-- [x] Fase 2 — Calendario reactivo *(lista para commit)*
-- [ ] Fase 3 — Formulario Entrada/Salida
+- [x] Fase 2 — Calendario reactivo
+- [x] Fase 3 — Formulario Entrada/Salida *(lista para commit)*
 - [ ] Fase 4 — Offline-First + PWA

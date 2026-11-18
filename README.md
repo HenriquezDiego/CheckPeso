@@ -14,6 +14,6 @@ npm run dev
 ## Fases
 
 1. Estructura base y vistas accesibles
-2. Calendario reactivo (Mar/Vie + días extras) ← **actual**
-3. Formulario Entrada / Salida
+2. Calendario reactivo (Mar/Vie + días extras)
+3. Formulario Entrada / Salida ← **actual**
 4. Offline-First (`localStorage`) + PWA

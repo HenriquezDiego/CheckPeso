@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+import WeightForm from '@/components/WeightForm.vue'
 import { formatLongDate, isOfficialDateKey, todayKey } from '@/utils/dates'
 
 const route = useRoute()
@@ -22,12 +23,11 @@ const esOficial = computed(() => isOfficialDateKey(fecha.value))
       <span class="reg-type"> — {{ esOficial ? 'día oficial' : 'día extra' }}</span>
     </p>
 
+    <WeightForm :fecha="fecha" />
+
     <div class="btn-stack" style="margin-top: var(--space-4)">
       <RouterLink class="btn btn--secondary btn--block" to="/calendario">
         Ver calendario
-      </RouterLink>
-      <RouterLink class="btn btn--secondary btn--block" to="/">
-        Volver al inicio
       </RouterLink>
     </div>
   </section>
