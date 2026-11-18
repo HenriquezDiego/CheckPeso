@@ -1,11 +1,25 @@
 <script setup>
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { formatLongDate, isOfficialDateKey, todayKey } from '@/utils/dates'
+
+const route = useRoute()
+
+const fecha = computed(() => {
+  const q = route.query.fecha
+  return typeof q === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(q) ? q : todayKey()
+})
+
+const fechaTexto = computed(() => formatLongDate(fecha.value))
+const esOficial = computed(() => isOfficialDateKey(fecha.value))
 </script>
 
 <template>
   <section class="panel" aria-labelledby="reg-title">
     <h1 id="reg-title">Registrar peso</h1>
     <p class="lead">
-      Anota el peso de entrada y de salida. También puedes registrar un día extra.
+      <span class="reg-date">{{ fechaTexto }}</span>
+      <span class="reg-type"> — {{ esOficial ? 'día oficial' : 'día extra' }}</span>
     </p>
 
     <div class="btn-stack" style="margin-top: var(--space-4)">
@@ -18,3 +32,16 @@
     </div>
   </section>
 </template>
+
+<style scoped>
+.reg-date {
+  color: var(--color-text);
+  font-weight: 800;
+  text-transform: capitalize;
+}
+
+.reg-type {
+  color: var(--color-text);
+  font-weight: 700;
+}
+</style>

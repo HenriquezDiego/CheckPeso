@@ -4,9 +4,6 @@
 <template>
   <section class="panel" aria-labelledby="home-title">
     <h1 id="home-title">CheckPeso</h1>
-    <p class="lead">
-      Registro sencillo de peso. Letras grandes, botones claros, sin distracciones.
-    </p>
 
     <nav class="btn-stack" aria-label="Acciones principales">
       <RouterLink class="btn btn--primary btn--block" to="/registro">

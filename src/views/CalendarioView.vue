@@ -1,19 +1,31 @@
 <script setup>
+import MonthCalendar from '@/components/MonthCalendar.vue'
 </script>
 
 <template>
   <section class="panel" aria-labelledby="cal-title">
     <h1 id="cal-title">Calendario</h1>
-    <p class="lead">
-      Mes completo. Martes y viernes más grandes; días extras con otro color.
-    </p>
 
-    <div class="btn-stack" style="margin-top: var(--space-4)">
+    <MonthCalendar />
+
+    <ul class="legend" aria-label="Leyenda de colores">
+      <li class="legend__item">
+        <span class="swatch swatch--official" aria-hidden="true" />
+        <span>Martes y viernes (oficiales)</span>
+      </li>
+      <li class="legend__item">
+        <span class="swatch swatch--extra" aria-hidden="true" />
+        <span>Día extra con registro</span>
+      </li>
+      <li class="legend__item">
+        <span class="swatch swatch--done" aria-hidden="true" />
+        <span>Oficial completo</span>
+      </li>
+    </ul>
+
+    <div class="btn-stack" style="margin-top: var(--space-3)">
       <RouterLink class="btn btn--primary btn--block" to="/registro">
-        Ir a registrar peso
-      </RouterLink>
-      <RouterLink class="btn btn--secondary btn--block" to="/">
-        Volver al inicio
+        Registrar peso de hoy
       </RouterLink>
     </div>
   </section>

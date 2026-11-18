@@ -27,14 +27,14 @@ En cada turno:
 
 ## Fases de desarrollo
 
-### Fase 1 — Estructura base y vistas accesibles *(actual)*
+### Fase 1 — Estructura base y vistas accesibles
 - Configuración del proyecto Vue 3 + Vite.
 - Layout accesible (tipografía grande, contraste, botones grandes).
 - Vistas esqueleto: Home / Calendario / Registro.
 - Estilos globales y tokens de accesibilidad.
 - Sin lógica de calendario real ni persistencia aún.
 
-### Fase 2 — Calendario reactivo
+### Fase 2 — Calendario reactivo *(actual)*
 - Calendario mensual interactivo.
 - Días oficiales **Martes** y **Viernes** priorizados y marcados en grande.
 - Días extras (cualquier otro día con registro) resaltados con color distinto.
@@ -126,7 +126,7 @@ type WeightEntry = {
 ## Estado actual
 
 - [x] Documento de contexto (`PROYECTO.md`)
-- [x] Fase 1 — Estructura base y vistas accesibles *(lista para commit)*
-- [ ] Fase 2 — Calendario reactivo
+- [x] Fase 1 — Estructura base y vistas accesibles
+- [x] Fase 2 — Calendario reactivo *(lista para commit)*
 - [ ] Fase 3 — Formulario Entrada/Salida
 - [ ] Fase 4 — Offline-First + PWA

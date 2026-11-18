@@ -1,7 +1,4 @@
-/* ============================================
-   CheckPeso — tokens de accesibilidad (Fase 1)
-   Tipografía grande · alto contraste · botones grandes
-   ============================================ */
+/* CheckPeso — tipografía grande · alto contraste · botones grandes */
 
 :root {
   /* Colores */
@@ -212,7 +209,6 @@ p {
   border: 0;
 }
 
-/* Leyenda de colores (preparación visual Fase 2) */
 .legend {
   display: flex;
   flex-direction: column;
