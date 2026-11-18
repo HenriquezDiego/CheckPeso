@@ -16,7 +16,8 @@ npm run dev
 1. Estructura base y vistas accesibles
 2. Calendario reactivo (Mar/Vie + días extras)
 3. Formulario Entrada / Salida
-4. Offline-First (`localStorage`) + PWA ← **actual**
+4. Offline-First (`localStorage`) + PWA
+5. Respaldo JSON (exportar / importar) ← **actual**
 
 ## PWA
 

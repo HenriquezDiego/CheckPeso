@@ -103,11 +103,18 @@ export function useWeightEntries() {
     return getPendingSyncEntries(entriesByDate.value)
   }
 
+  /** Reemplaza todos los registros (importación de respaldo JSON). */
+  function replaceAllEntries(nextEntries) {
+    entriesByDate.value = { ...(nextEntries || {}) }
+    persist()
+  }
+
   return {
     entries: readonly(entries),
     getEntry,
     dayStatus,
     upsertEntry,
     pendingSync,
+    replaceAllEntries,
   }
 }

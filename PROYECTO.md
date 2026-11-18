@@ -46,11 +46,16 @@ En cada turno:
 - Siempre Entrada + Salida (también en días extras); se pueden guardar por separado.
 - Validación accesible (mensajes claros, foco visible).
 
-### Fase 4 — Almacenamiento Offline-First y PWA *(actual)*
+### Fase 4 — Almacenamiento Offline-First y PWA
 - Guardado inmediato en `localStorage`.
 - Estructura de datos lista para sincronizar con Supabase o Google Sheets.
 - Manifest + Service Worker (PWA básica).
 - Lógica de enrutado inteligente según día y datos faltantes.
+
+### Fase 5 — Respaldo JSON local *(actual)*
+- Exportar / importar copia de seguridad en JSON bien estructurado.
+- Formato portable (lista `entries`) listo para sync futuro.
+- Confirmación clara al reemplazar datos al cargar.
 
 ---
 
@@ -84,17 +89,41 @@ En cada turno:
 
 ---
 
-## Modelo de datos previsto (referencia para fases posteriores)
+## Modelo de datos / JSON de respaldo
+
+```json
+{
+  "app": "CheckPeso",
+  "schemaVersion": 1,
+  "exportedAt": "2026-11-18T02:00:00.000Z",
+  "meta": {
+    "entryCount": 1,
+    "dateFrom": "2026-11-18",
+    "dateTo": "2026-11-18",
+    "storeVersion": 1
+  },
+  "entries": [
+    {
+      "id": "uuid",
+      "date": "2026-11-18",
+      "dayType": "official",
+      "entradaKg": 72.5,
+      "salidaKg": 71.8,
+      "synced": false,
+      "updatedAt": "2026-11-18T15:30:00.000Z"
+    }
+  ]
+}
+```
 
 ```ts
-// Ejemplo de registro — no implementar hasta Fase 3/4
 type WeightEntry = {
   id: string
   date: string // YYYY-MM-DD
-  dayType: 'official' | 'extra' // official = Mar/Vie
-  entradaKg: number | null // peso antes de terapia (puede guardarse solo)
-  salidaKg: number | null  // peso al salir (puede guardarse horas después)
-  synced: boolean // false hasta sync remoto
+  dayType: 'official' | 'extra'
+  entradaKg: number | null
+  salidaKg: number | null
+  synced: boolean
   updatedAt: string // ISO
 }
 ```
@@ -119,6 +148,7 @@ type WeightEntry = {
 2. `feat: interactive monthly calendar with official and extra days`
 3. `feat: large entry/exit weight registration form`
 4. `feat: offline-first localStorage persistence and basic PWA`
+5. `feat: structured JSON backup export and import`
 
 ---
 
@@ -128,4 +158,5 @@ type WeightEntry = {
 - [x] Fase 1 — Estructura base y vistas accesibles
 - [x] Fase 2 — Calendario reactivo
 - [x] Fase 3 — Formulario Entrada/Salida
-- [x] Fase 4 — Offline-First + PWA *(lista para commit)*
+- [x] Fase 4 — Offline-First + PWA
+- [x] Fase 5 — Respaldo JSON local *(lista para commit)*
