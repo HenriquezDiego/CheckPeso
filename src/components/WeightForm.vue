@@ -1,6 +1,7 @@
 <script setup>
 import { computed, nextTick, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import AppIcon from '@/components/AppIcon.vue'
 import { useWeightEntries } from '@/composables/useWeightEntries'
 import { isOfficialDateKey } from '@/utils/dates'
 
@@ -184,8 +185,9 @@ async function onSubmit() {
     </div>
 
     <div class="btn-stack">
-      <button type="submit" class="btn btn--primary btn--block">
-        Guardar
+      <button type="submit" class="btn btn--primary btn--block" aria-label="Guardar peso">
+        <AppIcon name="check" :size="28" />
+        <span>Guardar</span>
       </button>
     </div>
   </form>

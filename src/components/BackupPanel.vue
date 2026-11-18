@@ -1,5 +1,6 @@
 <script setup>
 import { nextTick, ref } from 'vue'
+import AppIcon from '@/components/AppIcon.vue'
 import { useWeightEntries } from '@/composables/useWeightEntries'
 import {
   buildBackupDocument,
@@ -98,12 +99,24 @@ function cancelImport() {
     </p>
 
     <div class="btn-stack">
-      <button type="button" class="btn btn--secondary btn--block" @click="onExport">
-        Guardar copia (JSON)
+      <button
+        type="button"
+        class="btn btn--secondary btn--block"
+        aria-label="Guardar copia JSON"
+        @click="onExport"
+      >
+        <AppIcon name="download" :size="26" />
+        <span>Guardar copia</span>
       </button>
 
-      <button type="button" class="btn btn--secondary btn--block" @click="openFilePicker">
-        Cargar copia (JSON)
+      <button
+        type="button"
+        class="btn btn--secondary btn--block"
+        aria-label="Cargar copia JSON"
+        @click="openFilePicker"
+      >
+        <AppIcon name="upload" :size="26" />
+        <span>Cargar copia</span>
       </button>
 
       <input
