@@ -24,7 +24,8 @@ const esOficial = computed(() => isOfficialDateKey(fecha.value))
       <span class="reg-type">
         <AppIcon
           class="reg-type__icon"
-          :name="esOficial ? 'official' : 'extra'"
+          :class="{ 'reg-type__icon--extra': !esOficial }"
+          :name="esOficial ? 'blood' : 'extra'"
           :size="esOficial ? 22 : 16"
         />
       </span>
@@ -68,5 +69,9 @@ const esOficial = computed(() => isOfficialDateKey(fecha.value))
 
 .reg-type__icon {
   color: var(--color-official);
+}
+
+.reg-type__icon--extra {
+  color: var(--color-extra);
 }
 </style>

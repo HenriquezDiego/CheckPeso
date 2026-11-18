@@ -186,7 +186,7 @@ async function onSubmit() {
 
     <div class="btn-stack">
       <button type="submit" class="btn btn--primary btn--block" aria-label="Guardar peso">
-        <AppIcon name="check" :size="28" />
+        <AppIcon name="check-plain" :size="28" />
         <span>Guardar</span>
       </button>
     </div>

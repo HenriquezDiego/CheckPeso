@@ -110,7 +110,8 @@ function labelFor(cell) {
             type="button"
             class="cal__day"
             :class="{
-              'cal__day--official': dayStatus(cell.dateKey).official,
+              'cal__day--official':
+                dayStatus(cell.dateKey).official && dayStatus(cell.dateKey).kind !== 'done',
               'cal__day--extra': dayStatus(cell.dateKey).kind === 'extra',
               'cal__day--done': dayStatus(cell.dateKey).kind === 'done',
               'cal__day--today': cell.dateKey === today,
@@ -121,21 +122,24 @@ function labelFor(cell) {
             :aria-current="cell.dateKey === today ? 'date' : undefined"
             @click="openDay(cell.dateKey)"
           >
-            <span v-if="cell.dateKey === today" class="cal__hoy">HOY</span>
+            <span v-if="cell.dateKey === today" class="cal__hoy" aria-hidden="true">
+              <AppIcon name="today" :size="12" />
+              HOY
+            </span>
             <span class="cal__num">{{ cell.day }}</span>
             <span
               v-if="dayStatus(cell.dateKey).kind === 'done'"
               class="cal__mark"
               title="Completo"
             >
-              <AppIcon name="done" :size="14" />
+              <AppIcon name="check" :size="18" />
             </span>
             <span
               v-else-if="dayStatus(cell.dateKey).official"
               class="cal__mark"
-              title="Oficial"
+              title="Día de control"
             >
-              <AppIcon name="official" :size="14" />
+              <AppIcon name="blood" :size="15" />
             </span>
             <span
               v-else-if="dayStatus(cell.dateKey).kind === 'extra'"
@@ -244,26 +248,32 @@ function labelFor(cell) {
 
 .cal__hoy {
   position: absolute;
-  top: 0.15rem;
+  top: 0.12rem;
   left: 50%;
   transform: translateX(-50%);
-  padding: 0.08rem 0.35rem;
-  border-radius: 4px;
-  background: #111;
-  color: #fff;
-  font-size: 0.62rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.12rem 0.4rem;
+  border-radius: 999px;
+  background: var(--color-today);
+  color: var(--color-today-ink);
+  border: 2px solid #063a9e;
+  font-size: 0.58rem;
   font-weight: 900;
-  letter-spacing: 0.04em;
-  line-height: 1.2;
+  letter-spacing: 0.03em;
+  line-height: 1;
   z-index: 1;
+  white-space: nowrap;
 }
 
 .cal__day--today {
-  padding-top: 1.05rem;
+  padding-top: 1.15rem;
   border-width: 3px;
+  border-color: var(--color-today);
   box-shadow:
     0 0 0 3px #fff,
-    0 0 0 6px #111;
+    0 0 0 6px var(--color-today);
 }
 
 .cal__day--today .cal__num {
@@ -272,11 +282,11 @@ function labelFor(cell) {
   text-decoration-thickness: 3px;
 }
 
-/* Martes / viernes */
+/* Martes / viernes — rojo + gota */
 .cal__day--official {
   min-height: 5rem;
   border-width: 3px;
-  border-color: #063a9e;
+  border-color: var(--color-official-border);
   background: var(--color-official);
   color: var(--color-official-text);
 }
@@ -285,10 +295,16 @@ function labelFor(cell) {
   font-size: 1.55rem;
 }
 
-.cal__day--official.cal__day--today {
-  box-shadow:
-    0 0 0 3px #fff,
-    0 0 0 6px #111;
+/* Completo — solo verde */
+.cal__day--done {
+  border-width: 3px;
+  border-color: #0f5a32;
+  background: var(--color-success);
+  color: #fff;
+}
+
+.cal__day--done .cal__num {
+  font-size: 1.45rem;
 }
 
 /* Día extra con registro */
@@ -297,13 +313,6 @@ function labelFor(cell) {
   border-color: #8a3d14;
   background: var(--color-extra);
   color: var(--color-extra-text);
-}
-
-/* Completo */
-.cal__day--done {
-  border-color: #0f5a32;
-  background: var(--color-success);
-  color: #fff;
 }
 
 .cal__day:focus-visible {

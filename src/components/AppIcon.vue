@@ -56,9 +56,16 @@ defineProps({
       fill="currentColor"
       d="M12 3a4 4 0 0 0-4 4h2a2 2 0 1 1 4 0h2a4 4 0 0 0-4-4zm-7 6v12h14V9H5zm2 2h10v8H7v-8zm3.5 2-.9 4h3.8l-.9-4H10.5z"
     />
-    <!-- Guardar / check -->
+    <!-- Check bold dentro de círculo (recorte: se ve bien en verde o en leyenda) -->
     <path
       v-else-if="name === 'check'"
+      fill="currentColor"
+      fill-rule="evenodd"
+      d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.95 7.05-1.6-1.6-5.05 5.05-2.65-2.65-1.6 1.6 4.25 4.25 6.65-6.65z"
+    />
+    <!-- Check simple (botones de guardar) -->
+    <path
+      v-else-if="name === 'check-plain'"
       fill="currentColor"
       d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"
     />
@@ -68,11 +75,11 @@ defineProps({
       fill="currentColor"
       d="M19.14 12.94c.04-.31.06-.63.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.07 7.07 0 0 0-1.63-.94l-.36-2.54a.5.5 0 0 0-.5-.42h-3.84a.5.5 0 0 0-.5.42l-.36 2.54c-.59.24-1.13.55-1.63.94l-2.39-.96a.5.5 0 0 0-.6.22L2.77 8.84a.5.5 0 0 0 .12.64l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94L2.89 14.52a.5.5 0 0 0-.12.64l1.92 3.32c.14.24.43.34.68.22l2.39-.96c.5.39 1.04.71 1.63.94l.36 2.54c.05.24.26.42.5.42h3.84c.24 0 .45-.18.5-.42l.36-2.54c.59-.24 1.13-.55 1.63-.94l2.39.96c.25.12.54.02.68-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.03-1.58zM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7z"
     />
-    <!-- Día oficial -->
+    <!-- Gota de sangre (días oficiales Mar/Vie) -->
     <path
-      v-else-if="name === 'official'"
+      v-else-if="name === 'blood' || name === 'official'"
       fill="currentColor"
-      d="M12 2 9.2 8.6 2 9.2l5.4 4.6L5.6 21 12 17.3 18.4 21l-1.8-7.2L22 9.2l-7.2-.6z"
+      d="M12 2.5C12 2.5 6 9.2 6 13.2a6 6 0 0 0 12 0C18 9.2 12 2.5 12 2.5zm0 14.7a2.7 2.7 0 0 1-2.7-2.7c0-1.5 2.7-4.6 2.7-4.6s2.7 3.1 2.7 4.6a2.7 2.7 0 0 1-2.7 2.7z"
     />
     <!-- Día extra -->
     <circle v-else-if="name === 'extra'" cx="12" cy="12" r="8" fill="currentColor" />

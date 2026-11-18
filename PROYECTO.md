@@ -134,7 +134,8 @@ type WeightEntry = {
 
 - Fondo: `#F7F7F2` (claro, suave)
 - Texto principal: `#1A1A1A` (alto contraste)
-- Acento oficial (Mar/Vie): `#0B5FFF` (azul fuerte)
+- Acento oficial (Mar/Vie): `#C62828` (rojo + icono gota)
+- Botón primario UI: `#0B5FFF` (azul)
 - Acento día extra: `#C45C26` (naranja/terracota diferenciador)
 - Éxito / completo: `#1B7F4A`
 - Botones: altura mínima ~56–64px, texto ≥ 1.25rem

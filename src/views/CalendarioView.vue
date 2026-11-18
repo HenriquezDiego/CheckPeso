@@ -13,25 +13,28 @@ import { todayKey } from '@/utils/dates'
     <ul class="legend" aria-label="Leyenda">
       <li class="legend__item">
         <span class="legend__icon legend__icon--official" aria-hidden="true">
-          <AppIcon name="official" :size="18" />
+          <AppIcon name="blood" :size="14" />
         </span>
-        <span>Martes y viernes</span>
+        <span>Mar / Vie</span>
       </li>
       <li class="legend__item">
         <span class="legend__icon legend__icon--extra" aria-hidden="true">
-          <AppIcon name="extra" :size="14" />
+          <AppIcon name="extra" :size="12" />
         </span>
-        <span>Día extra</span>
+        <span>Extra</span>
       </li>
       <li class="legend__item">
         <span class="legend__icon legend__icon--done" aria-hidden="true">
-          <AppIcon name="done" :size="18" />
+          <AppIcon name="check" :size="18" />
         </span>
         <span>Completo</span>
       </li>
       <li class="legend__item">
-        <span class="legend__hoy" aria-hidden="true">HOY</span>
-        <span>Día actual</span>
+        <span class="legend__hoy" aria-hidden="true">
+          <AppIcon name="today" :size="11" />
+          HOY
+        </span>
+        <span>Hoy</span>
       </li>
     </ul>
 
@@ -53,8 +56,8 @@ import { todayKey } from '@/utils/dates'
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
+  width: 1.5rem;
+  height: 1.5rem;
   border: 2px solid var(--color-border);
   border-radius: 6px;
   color: #fff;
@@ -62,7 +65,7 @@ import { todayKey } from '@/utils/dates'
 
 .legend__icon--official {
   background: var(--color-official);
-  border-color: #063a9e;
+  border-color: var(--color-official-border);
 }
 
 .legend__icon--extra {
@@ -73,20 +76,23 @@ import { todayKey } from '@/utils/dates'
 .legend__icon--done {
   background: var(--color-success);
   border-color: #0f5a32;
+  color: #fff;
 }
 
 .legend__hoy {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 1.75rem;
-  height: 1.75rem;
+  gap: 0.12rem;
+  min-width: 1.5rem;
+  height: 1.5rem;
   padding: 0 0.3rem;
-  border-radius: 4px;
-  background: #111;
-  color: #fff;
-  font-size: 0.65rem;
+  border-radius: 999px;
+  background: var(--color-today);
+  color: var(--color-today-ink);
+  border: 2px solid #063a9e;
+  font-size: 0.55rem;
   font-weight: 900;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
 }
 </style>
