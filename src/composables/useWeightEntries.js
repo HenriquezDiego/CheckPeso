@@ -1,12 +1,18 @@
 import { computed, readonly, ref } from 'vue'
 import { isOfficialDateKey } from '@/utils/dates'
+import {
+  getPendingSyncEntries,
+  loadStore,
+  saveStore,
+} from '@/storage/weightStore'
 
 /**
- * Almacén reactivo en memoria.
+ * Almacén reactivo + localStorage.
  * Entrada: { id, date, dayType, entradaKg, salidaKg, synced, updatedAt }
  * Siempre entrada + salida; se pueden guardar por separado (horas después).
  */
-const entriesByDate = ref({})
+const boot = loadStore()
+const entriesByDate = ref(boot.entries)
 
 function hasAnyWeight(entry) {
   if (!entry) return false
@@ -16,6 +22,10 @@ function hasAnyWeight(entry) {
 function isComplete(entry) {
   if (!entry) return false
   return entry.entradaKg != null && entry.salidaKg != null
+}
+
+function persist() {
+  saveStore(entriesByDate.value)
 }
 
 export function useWeightEntries() {
@@ -85,6 +95,12 @@ export function useWeightEntries() {
         updatedAt: new Date().toISOString(),
       },
     }
+
+    persist()
+  }
+
+  function pendingSync() {
+    return getPendingSyncEntries(entriesByDate.value)
   }
 
   return {
@@ -92,5 +108,6 @@ export function useWeightEntries() {
     getEntry,
     dayStatus,
     upsertEntry,
+    pendingSync,
   }
 }

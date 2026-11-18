@@ -15,14 +15,14 @@ const title = computed(() => {
   <header class="app-header" role="banner">
     <div class="app-header__inner">
       <RouterLink
-        v-if="route.name !== 'home'"
+        v-if="route.name === 'registro'"
         class="app-header__back btn"
-        to="/"
-        aria-label="Volver al inicio"
+        to="/calendario"
+        aria-label="Volver al calendario"
       >
-        ← Inicio
+        ← Calendario
       </RouterLink>
-      <p class="app-header__brand" :aria-current="route.name === 'home' ? 'page' : undefined">
+      <p class="app-header__brand" :aria-current="route.name === 'calendario' ? 'page' : undefined">
         {{ title }}
       </p>
     </div>

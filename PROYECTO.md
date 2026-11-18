@@ -40,13 +40,13 @@ En cada turno:
 - Días extras (cualquier otro día con registro) resaltados con color distinto.
 - Navegación mes anterior / siguiente.
 
-### Fase 3 — Formulario de doble registro Entrada / Salida *(actual)*
+### Fase 3 — Formulario de doble registro Entrada / Salida
 - Pantalla grande de registro.
 - Campos: peso de **Entrada** y peso de **Salida** (días oficiales).
 - Siempre Entrada + Salida (también en días extras); se pueden guardar por separado.
 - Validación accesible (mensajes claros, foco visible).
 
-### Fase 4 — Almacenamiento Offline-First y PWA
+### Fase 4 — Almacenamiento Offline-First y PWA *(actual)*
 - Guardado inmediato en `localStorage`.
 - Estructura de datos lista para sincronizar con Supabase o Google Sheets.
 - Manifest + Service Worker (PWA básica).
@@ -127,5 +127,5 @@ type WeightEntry = {
 - [x] Documento de contexto (`PROYECTO.md`)
 - [x] Fase 1 — Estructura base y vistas accesibles
 - [x] Fase 2 — Calendario reactivo
-- [x] Fase 3 — Formulario Entrada/Salida *(lista para commit)*
-- [ ] Fase 4 — Offline-First + PWA
+- [x] Fase 3 — Formulario Entrada/Salida
+- [x] Fase 4 — Offline-First + PWA *(lista para commit)*
