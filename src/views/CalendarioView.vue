@@ -1,11 +1,10 @@
 <script setup>
-import BackupPanel from '@/components/BackupPanel.vue'
 import MonthCalendar from '@/components/MonthCalendar.vue'
 </script>
 
 <template>
   <section class="panel" aria-labelledby="cal-title">
-    <h1 id="cal-title">Calendario</h1>
+    <h1 id="cal-title" class="sr-only">Calendario</h1>
 
     <MonthCalendar />
 
@@ -29,7 +28,5 @@ import MonthCalendar from '@/components/MonthCalendar.vue'
         Registrar peso de hoy
       </RouterLink>
     </div>
-
-    <BackupPanel />
   </section>
 </template>

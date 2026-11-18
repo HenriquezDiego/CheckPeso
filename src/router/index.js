@@ -22,6 +22,12 @@ const router = createRouter({
       component: () => import('@/views/RegistroView.vue'),
       meta: { title: 'Registrar peso' },
     },
+    {
+      path: '/ajustes',
+      name: 'ajustes',
+      component: () => import('@/views/AjustesView.vue'),
+      meta: { title: 'Ajustes' },
+    },
   ],
   scrollBehavior() {
     return { top: 0 }

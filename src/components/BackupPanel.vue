@@ -132,9 +132,7 @@ function cancelImport() {
 
 <style scoped>
 .backup {
-  margin-top: var(--space-5);
-  padding-top: var(--space-4);
-  border-top: 3px solid var(--color-border);
+  margin-top: var(--space-2);
 }
 
 .backup__status {
