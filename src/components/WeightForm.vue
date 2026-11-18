@@ -18,7 +18,6 @@ const esOficial = computed(() => isOfficialDateKey(props.fecha))
 
 const entrada = ref('')
 const salida = ref('')
-const pesoExtra = ref('')
 const errorMsg = ref('')
 const errorRef = ref(null)
 const savedMsg = ref('')
@@ -27,27 +26,50 @@ function kgToInput(value) {
   return value == null ? '' : String(value)
 }
 
+/** Solo dígitos: máx. 3 enteros y 2 decimales (ej. 999.99). */
+function sanitizeWeightInput(raw) {
+  let s = String(raw ?? '').replace(/[^\d.,]/g, '')
+  const sepIndex = s.search(/[.,]/)
+
+  if (sepIndex === -1) {
+    return s.slice(0, 3)
+  }
+
+  const sep = s[sepIndex]
+  const intPart = s.slice(0, sepIndex).replace(/[.,]/g, '').slice(0, 3)
+  const decPart = s.slice(sepIndex + 1).replace(/[.,]/g, '').slice(0, 2)
+  return decPart.length > 0 ? `${intPart}${sep}${decPart}` : `${intPart}${sep}`
+}
+
+function applyWeightInput(event, modelRef) {
+  const cleaned = sanitizeWeightInput(event.target.value)
+  modelRef.value = cleaned
+  // Si el valor limpio no cambia (ej. "72" + "a"), Vue no re-renderiza:
+  // hay que forzar el DOM para que la letra no se quede visible.
+  event.target.value = cleaned
+}
+
+function onEntradaInput(event) {
+  applyWeightInput(event, entrada)
+}
+
+function onSalidaInput(event) {
+  applyWeightInput(event, salida)
+}
+
+function onBeforeWeightInput(event) {
+  if (event.data == null) return
+  if (/[^\d.,]/.test(event.data)) {
+    event.preventDefault()
+  }
+}
+
 function loadFromStore() {
   const entry = getEntry(props.fecha)
   errorMsg.value = ''
   savedMsg.value = ''
-
-  if (!entry) {
-    entrada.value = ''
-    salida.value = ''
-    pesoExtra.value = ''
-    return
-  }
-
-  if (esOficial.value) {
-    entrada.value = kgToInput(entry.entradaKg)
-    salida.value = kgToInput(entry.salidaKg)
-    pesoExtra.value = ''
-  } else {
-    pesoExtra.value = kgToInput(entry.entradaKg ?? entry.salidaKg)
-    entrada.value = ''
-    salida.value = ''
-  }
+  entrada.value = kgToInput(entry?.entradaKg)
+  salida.value = kgToInput(entry?.salidaKg)
 }
 
 watch(() => props.fecha, loadFromStore, { immediate: true })
@@ -63,7 +85,7 @@ function parseKg(raw) {
   if (num < 20 || num > 300) {
     return { empty: false, value: null, outOfRange: true }
   }
-  return { empty: false, value: Math.round(num * 10) / 10 }
+  return { empty: false, value: Math.round(num * 100) / 100 }
 }
 
 async function showError(message) {
@@ -76,52 +98,34 @@ async function showError(message) {
 async function onSubmit() {
   errorMsg.value = ''
 
-  if (esOficial.value) {
-    const inParsed = parseKg(entrada.value)
-    const outParsed = parseKg(salida.value)
+  const prev = getEntry(props.fecha)
+  const inParsed = parseKg(entrada.value)
+  const outParsed = parseKg(salida.value)
 
-    if (inParsed.invalid || outParsed.invalid) {
-      await showError('Escribe solo números. Ejemplo: 72.5')
-      return
-    }
-    if (inParsed.outOfRange || outParsed.outOfRange) {
-      await showError('El peso debe estar entre 20 y 300 kg.')
-      return
-    }
-    if (inParsed.empty && outParsed.empty) {
-      await showError('Escribe al menos el peso de entrada o el de salida.')
-      return
-    }
-
-    upsertEntry({
-      date: props.fecha,
-      dayType: 'official',
-      entradaKg: inParsed.empty ? null : inParsed.value,
-      salidaKg: outParsed.empty ? null : outParsed.value,
-    })
-  } else {
-    const parsed = parseKg(pesoExtra.value)
-
-    if (parsed.empty) {
-      await showError('Escribe el peso en kilogramos.')
-      return
-    }
-    if (parsed.invalid) {
-      await showError('Escribe solo números. Ejemplo: 72.5')
-      return
-    }
-    if (parsed.outOfRange) {
-      await showError('El peso debe estar entre 20 y 300 kg.')
-      return
-    }
-
-    upsertEntry({
-      date: props.fecha,
-      dayType: 'extra',
-      entradaKg: parsed.value,
-      salidaKg: null,
-    })
+  if (inParsed.invalid || outParsed.invalid) {
+    await showError('Escribe solo números. Ejemplo: 72.5')
+    return
   }
+  if (inParsed.outOfRange || outParsed.outOfRange) {
+    await showError('El peso debe estar entre 20 y 300 kg.')
+    return
+  }
+
+  // Campo vacío = conservar el valor ya guardado (entrada ahora, salida horas después)
+  const nextEntrada = inParsed.empty ? (prev?.entradaKg ?? null) : inParsed.value
+  const nextSalida = outParsed.empty ? (prev?.salidaKg ?? null) : outParsed.value
+
+  if (nextEntrada == null && nextSalida == null) {
+    await showError('Escribe al menos el peso de entrada o el de salida.')
+    return
+  }
+
+  upsertEntry({
+    date: props.fecha,
+    dayType: esOficial.value ? 'official' : 'extra',
+    entradaKg: nextEntrada,
+    salidaKg: nextSalida,
+  })
 
   savedMsg.value = 'Peso guardado.'
   await router.push({ name: 'calendario' })
@@ -141,52 +145,43 @@ async function onSubmit() {
       {{ errorMsg || savedMsg }}
     </p>
 
-    <template v-if="esOficial">
-      <div class="field">
-        <label class="field__label" for="peso-entrada">Entrada (kg)</label>
-        <input
-          id="peso-entrada"
-          v-model="entrada"
-          class="field__input"
-          type="text"
-          inputmode="decimal"
-          autocomplete="off"
-          enterkeyhint="next"
-          aria-describedby="hint-entrada"
-        />
-        <p id="hint-entrada" class="field__hint">Peso al llegar</p>
-      </div>
+    <div class="field">
+      <label class="field__label" for="peso-entrada">Entrada (kg)</label>
+      <input
+        id="peso-entrada"
+        class="field__input"
+        type="text"
+        inputmode="decimal"
+        pattern="[0-9]{1,3}([.,][0-9]{0,2})?"
+        maxlength="6"
+        autocomplete="off"
+        enterkeyhint="next"
+        aria-describedby="hint-entrada"
+        :value="entrada"
+        @beforeinput="onBeforeWeightInput"
+        @input="onEntradaInput"
+      />
+      <p id="hint-entrada" class="field__hint">Antes de la terapia</p>
+    </div>
 
-      <div class="field">
-        <label class="field__label" for="peso-salida">Salida (kg)</label>
-        <input
-          id="peso-salida"
-          v-model="salida"
-          class="field__input"
-          type="text"
-          inputmode="decimal"
-          autocomplete="off"
-          enterkeyhint="done"
-          aria-describedby="hint-salida"
-        />
-        <p id="hint-salida" class="field__hint">Peso al salir</p>
-      </div>
-    </template>
-
-    <template v-else>
-      <div class="field">
-        <label class="field__label" for="peso-extra">Peso (kg)</label>
-        <input
-          id="peso-extra"
-          v-model="pesoExtra"
-          class="field__input"
-          type="text"
-          inputmode="decimal"
-          autocomplete="off"
-          enterkeyhint="done"
-        />
-      </div>
-    </template>
+    <div class="field">
+      <label class="field__label" for="peso-salida">Salida (kg)</label>
+      <input
+        id="peso-salida"
+        class="field__input"
+        type="text"
+        inputmode="decimal"
+        pattern="[0-9]{1,3}([.,][0-9]{0,2})?"
+        maxlength="6"
+        autocomplete="off"
+        enterkeyhint="done"
+        aria-describedby="hint-salida"
+        :value="salida"
+        @beforeinput="onBeforeWeightInput"
+        @input="onSalidaInput"
+      />
+      <p id="hint-salida" class="field__hint">Al salir de la terapia</p>
+    </div>
 
     <div class="btn-stack">
       <button type="submit" class="btn btn--primary btn--block">

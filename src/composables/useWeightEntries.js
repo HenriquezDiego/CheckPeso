@@ -4,6 +4,7 @@ import { isOfficialDateKey } from '@/utils/dates'
 /**
  * Almacén reactivo en memoria.
  * Entrada: { id, date, dayType, entradaKg, salidaKg, synced, updatedAt }
+ * Siempre entrada + salida; se pueden guardar por separado (horas después).
  */
 const entriesByDate = ref({})
 
@@ -12,8 +13,8 @@ function hasAnyWeight(entry) {
   return entry.entradaKg != null || entry.salidaKg != null
 }
 
-function isCompleteOfficial(entry) {
-  if (!entry || entry.dayType !== 'official') return false
+function isComplete(entry) {
+  if (!entry) return false
   return entry.entradaKg != null && entry.salidaKg != null
 }
 
@@ -37,20 +38,30 @@ export function useWeightEntries() {
       }
     }
 
-    if (official || entry.dayType === 'official') {
-      const complete = isCompleteOfficial(entry)
+    const complete = isComplete(entry)
+
+    if (complete) {
+      return {
+        official,
+        hasData: true,
+        complete: true,
+        kind: 'done',
+      }
+    }
+
+    if (official) {
       return {
         official: true,
         hasData: true,
-        complete,
-        kind: complete ? 'done' : 'official',
+        complete: false,
+        kind: 'official',
       }
     }
 
     return {
       official: false,
       hasData: true,
-      complete: true,
+      complete: false,
       kind: 'extra',
     }
   }

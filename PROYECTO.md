@@ -43,7 +43,7 @@ En cada turno:
 ### Fase 3 — Formulario de doble registro Entrada / Salida *(actual)*
 - Pantalla grande de registro.
 - Campos: peso de **Entrada** y peso de **Salida** (días oficiales).
-- Soporte para registro simple en días extras.
+- Siempre Entrada + Salida (también en días extras); se pueden guardar por separado.
 - Validación accesible (mensajes claros, foco visible).
 
 ### Fase 4 — Almacenamiento Offline-First y PWA
@@ -60,7 +60,7 @@ En cada turno:
    Priorizados y marcados en grande en el calendario mensual. Permiten doble registro: peso de "Entrada" y peso de "Salida".
 
 2. **Flexibilidad para días extras**  
-   Si se registra peso cualquier otro día (ej. miércoles), la app lo permite y lo resalta en el calendario con un color distinto al de los días oficiales.
+   Si se registra peso cualquier otro día (ej. miércoles), la app lo permite (también con Entrada y Salida) y lo resalta en el calendario con un color distinto al de los días oficiales.
 
 3. **Almacenamiento Offline-First**  
    Guardado inmediato en `localStorage` para funcionar sin internet. Estructura de datos preparada para sincronizar con Supabase o Google Sheets más adelante.
@@ -92,9 +92,8 @@ type WeightEntry = {
   id: string
   date: string // YYYY-MM-DD
   dayType: 'official' | 'extra' // official = Mar/Vie
-  entradaKg: number | null
-  salidaKg: number | null
-  // días extras pueden usar solo un valor (p. ej. en entradaKg)
+  entradaKg: number | null // peso antes de terapia (puede guardarse solo)
+  salidaKg: number | null  // peso al salir (puede guardarse horas después)
   synced: boolean // false hasta sync remoto
   updatedAt: string // ISO
 }

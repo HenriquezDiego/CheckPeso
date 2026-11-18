@@ -55,9 +55,9 @@ function labelFor(cell) {
   const parts = [long]
 
   if (status.official) parts.push('día oficial')
-  if (status.kind === 'extra') parts.push('día extra con registro')
-  if (status.complete && status.official) parts.push('completo')
-  else if (status.hasData && status.official) parts.push('registro incompleto')
+  if (!status.official && status.hasData) parts.push('día extra')
+  if (status.complete) parts.push('completo')
+  else if (status.hasData) parts.push('registro incompleto')
   if (cell.dateKey === today) parts.push('hoy')
 
   return parts.join(', ')
