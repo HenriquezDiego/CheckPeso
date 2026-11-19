@@ -170,6 +170,12 @@ p {
   background: var(--color-surface);
 }
 
+.btn--danger {
+  background: #fff5f5;
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
 .btn--block {
   width: 100%;
 }

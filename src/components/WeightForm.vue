@@ -2,6 +2,7 @@
 import { computed, nextTick, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import AppIcon from '@/components/AppIcon.vue'
+import ConfirmModal from '@/components/ConfirmModal.vue'
 import { useWeightEntries } from '@/composables/useWeightEntries'
 import { isOfficialDateKey } from '@/utils/dates'
 
@@ -13,15 +14,20 @@ const props = defineProps({
 })
 
 const router = useRouter()
-const { getEntry, upsertEntry } = useWeightEntries()
+const { getEntry, upsertEntry, removeEntry } = useWeightEntries()
 
 const esOficial = computed(() => isOfficialDateKey(props.fecha))
+const hasSavedData = computed(() => {
+  const entry = getEntry(props.fecha)
+  return entry != null && (entry.entradaKg != null || entry.salidaKg != null)
+})
 
 const entrada = ref('')
 const salida = ref('')
 const errorMsg = ref('')
 const errorRef = ref(null)
 const savedMsg = ref('')
+const confirmDelete = ref(false)
 
 function kgToInput(value) {
   return value == null ? '' : String(value)
@@ -69,6 +75,7 @@ function loadFromStore() {
   const entry = getEntry(props.fecha)
   errorMsg.value = ''
   savedMsg.value = ''
+  confirmDelete.value = false
   entrada.value = kgToInput(entry?.entradaKg)
   salida.value = kgToInput(entry?.salidaKg)
 }
@@ -98,6 +105,7 @@ async function showError(message) {
 
 async function onSubmit() {
   errorMsg.value = ''
+  confirmDelete.value = false
 
   const prev = getEntry(props.fecha)
   const inParsed = parseKg(entrada.value)
@@ -129,6 +137,25 @@ async function onSubmit() {
   })
 
   savedMsg.value = 'Peso guardado.'
+  await router.push({ name: 'calendario' })
+}
+
+function askDelete() {
+  errorMsg.value = ''
+  savedMsg.value = ''
+  confirmDelete.value = true
+}
+
+function cancelDelete() {
+  confirmDelete.value = false
+}
+
+async function confirmDeleteDay() {
+  removeEntry(props.fecha)
+  confirmDelete.value = false
+  entrada.value = ''
+  salida.value = ''
+  savedMsg.value = 'Día borrado.'
   await router.push({ name: 'calendario' })
 }
 </script>
@@ -189,7 +216,29 @@ async function onSubmit() {
         <AppIcon name="check-plain" :size="28" />
         <span>Guardar</span>
       </button>
+
+      <button
+        v-if="hasSavedData"
+        type="button"
+        class="btn btn--danger btn--block"
+        aria-label="Borrar este día"
+        @click="askDelete"
+      >
+        <AppIcon name="trash" :size="26" />
+        <span>Borrar día</span>
+      </button>
     </div>
+
+    <ConfirmModal
+      :open="confirmDelete"
+      title="¿Borrar este día?"
+      message="Se eliminarán los pesos de entrada y salida. Esta acción no se puede deshacer."
+      confirm-label="Sí, borrar"
+      cancel-label="Cancelar"
+      danger
+      @confirm="confirmDeleteDay"
+      @cancel="cancelDelete"
+    />
   </form>
 </template>
 
@@ -258,4 +307,5 @@ async function onSubmit() {
   font-size: var(--fs-base);
   color: var(--color-text-muted);
 }
+
 </style>

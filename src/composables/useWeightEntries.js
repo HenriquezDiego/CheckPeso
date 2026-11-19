@@ -109,11 +109,22 @@ export function useWeightEntries() {
     persist()
   }
 
+  /** Borra un día completo (queda limpio en el calendario). */
+  function removeEntry(dateKey) {
+    if (!dateKey || !entriesByDate.value[dateKey]) return
+
+    const next = { ...entriesByDate.value }
+    delete next[dateKey]
+    entriesByDate.value = next
+    persist()
+  }
+
   return {
     entries: readonly(entries),
     getEntry,
     dayStatus,
     upsertEntry,
+    removeEntry,
     pendingSync,
     replaceAllEntries,
   }
